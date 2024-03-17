@@ -15,7 +15,8 @@ from  credentials import credentials
 options = webdriver.ChromeOptions()
 options.add_argument("--start-maximized")
 options.add_experimental_option("detach", True)
-driver = webdriver.Chrome(service=Service("./chromedriver"),options=options)
+# driver = webdriver.Chrome(service=Service("./chromedriver"),options=options)
+driver = webdriver.Chrome(options=options)
 ERROR_COUNTER = 0
 
 def login_process(driver):
@@ -32,7 +33,7 @@ def login_process(driver):
 
     driver.find_element(By.XPATH, '//*[@id="session_password"]').send_keys(credentials()['password'])
     time.sleep(1.5)
-    driver.find_element(By.XPATH,'//*[@id="main-content"]/section[1]/div/div/form/button').click()
+    driver.find_element(By.XPATH,'//*[@id="main-content"]/section[1]/div/div/form/div[2]/button').click()
 
     try:
         driver.find_element(By.XPATH,'//*[@id="ember26"]/button[1]').click()
@@ -92,7 +93,7 @@ def connect_by_title(driver,title,page_count=1):
 
 if __name__ == "__main__":
 
-    TITLE = "frontend developer"
+    TITLE = "IT recruiter amsterdam"
     PAGE = 1
 
     if("cookies.pkl" in  os.listdir('.')):
