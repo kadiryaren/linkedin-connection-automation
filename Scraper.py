@@ -15,25 +15,26 @@ from  credentials import credentials
 options = webdriver.ChromeOptions()
 options.add_argument("--start-maximized")
 options.add_experimental_option("detach", True)
+options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
 # driver = webdriver.Chrome(service=Service("./chromedriver"),options=options)
 driver = webdriver.Chrome(options=options)
 ERROR_COUNTER = 0
 
 def login_process(driver):
-    driver.get('https://tr.linkedin.com/')
+    driver.get('https://www.linkedin.com/login/tr?fromSignIn=true&trk=guest_homepage-basic_nav-header-signin/')
     time.sleep(5)
-    driver.find_element(By.XPATH,'//*[@id="session_key"]').click()
+    driver.find_element(By.XPATH,'//*[@id="username"]').click()
     time.sleep(1.5)
-    driver.find_element(By.XPATH,'//*[@id="session_key"]').send_keys(credentials()['username'])
+    driver.find_element(By.XPATH,'//*[@id="username"]').send_keys(credentials()['username'])
     time.sleep(1.2)
 
 
-    driver.find_element(By.XPATH, '//*[@id="session_password"]').click()
+    driver.find_element(By.XPATH, '//*[@id="password"]').click()
     time.sleep(1.1)
 
-    driver.find_element(By.XPATH, '//*[@id="session_password"]').send_keys(credentials()['password'])
+    driver.find_element(By.XPATH, '//*[@id="password"]').send_keys(credentials()['password'])
     time.sleep(1.5)
-    driver.find_element(By.XPATH,'//*[@id="main-content"]/section[1]/div/div/form/div[2]/button').click()
+    driver.find_element(By.XPATH, '//button[@aria-label="Oturum aç" and @type="submit"]').click()
 
     try:
         driver.find_element(By.XPATH,'//*[@id="ember26"]/button[1]').click()
@@ -43,11 +44,11 @@ def login_process(driver):
 def convert_string(string):
     return string.replace(' ','%20')
 
-def connect_by_title(driver,title,page_count=1):
+def connect_by_title(driver,title,page_count=3):
     for page in range(1,page_count+1):
         driver.get(f'https://www.linkedin.com/search/results/PEOPLE/?geoUrn=%5B"102890719"%5D&keywords={convert_string(title)}&origin=GLOBAL_SEARCH_HEADER&page={page}')
         time.sleep(10)
-        all_people_ul = driver.find_elements(By.CLASS_NAME,'reusable-search__entity-result-list')[0]
+        all_people_ul = driver.find_element(By.XPATH, '//ul[@role="list" and contains(@class, "list-style-none")]')
         all_people_li = all_people_ul.find_elements(By.TAG_NAME,'li')
 
         for count,li in enumerate(all_people_li):
@@ -93,8 +94,8 @@ def connect_by_title(driver,title,page_count=1):
 
 if __name__ == "__main__":
 
-    TITLE = "IT recruiter amsterdam"
-    PAGE = 1
+    TITLE = "it recruiter remote"
+    PAGE = 5
 
     if("cookies.pkl" in  os.listdir('.')):
         driver.get("https://linkedin.com")
