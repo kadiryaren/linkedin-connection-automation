@@ -16,6 +16,7 @@ options = webdriver.ChromeOptions()
 options.add_argument("--start-maximized")
 options.add_experimental_option("detach", True)
 options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+# options.add_argument('--headless')
 # driver = webdriver.Chrome(service=Service("./chromedriver"),options=options)
 driver = webdriver.Chrome(options=options)
 ERROR_COUNTER = 0
@@ -58,6 +59,9 @@ def connect_by_title(driver,title,page_count=3):
                 if('Connect' in button.text):
                     button.click()
                     time.sleep(2)
+                    with open('connection_log.txt', 'a') as log_file:
+                        log_file.write(f"Attempted to connect with {li.text}\n")
+                    print(f"Attempted to connect with {li.text}")
                     try:
                         popup_check = driver.find_elements(By.CLASS_NAME,'artdeco-button--primary')
                         for send_button in popup_check:
