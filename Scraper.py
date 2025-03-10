@@ -36,6 +36,10 @@ options.add_experimental_option("detach", True)
 options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
 options.add_argument("--load-extension=" + extension_path)
 
+# Disable image loading
+prefs = {"profile.managed_default_content_settings.images": 2}
+options.add_experimental_option("prefs", prefs)
+
 driver = webdriver.Chrome(options=options)
 
 if __name__ == "__main__":
